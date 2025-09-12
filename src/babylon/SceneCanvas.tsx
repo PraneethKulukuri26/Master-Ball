@@ -12,10 +12,10 @@ import * as CANNON from 'cannon-es';
 export const SceneCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [score, setScore] = useState(0);
-  const [lives, setLives] = useState(3); // 🆕 Lives
-  const [gameOver, setGameOver] = useState(false); // 🆕 Game Over flag
-  const invincibleRef = useRef(false); // 🆕 Invincibility flag
-  const aiCountRef = useRef(3); // Track number of AI balls
+  const [lives, setLives] = useState(3); 
+  const [gameOver, setGameOver] = useState(false);
+  const invincibleRef = useRef(false);
+  const aiCountRef = useRef(3);
 
   useEffect(() => {
     if (gameOver) return; // Stop game when over 🆕
