@@ -148,6 +148,13 @@ export const SceneCanvas = () => {
             aiCountRef.current++;
             spawnAIBall(aiBalls.length);
           }
+
+          // Every 10 points, gain a life
+          if (Math.floor(newScore / 10) > Math.floor(s / 10)) {
+            setLives(l => l + 1);
+          }
+
+            
           return newScore;
         });
         spawnCoin();
