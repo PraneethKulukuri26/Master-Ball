@@ -43,7 +43,7 @@ export const SceneCanvas = () => {
 
   // Apply texture to ground
   const groundMat = new StandardMaterial('groundMat', scene);
-  groundMat.diffuseTexture = new (window as any).BABYLON.Texture('src/textures/ground.jpg', scene);
+  groundMat.diffuseTexture = new (window as any).BABYLON.Texture('src\\textures\\ground.jpg', scene);
   ground.material = groundMat;
 
     // const ground = MeshBuilder.CreateGroundFromHeightMap(
