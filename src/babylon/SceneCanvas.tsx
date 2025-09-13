@@ -12,13 +12,13 @@ import * as CANNON from 'cannon-es';
 export const SceneCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [score, setScore] = useState(0);
-  const [lives, setLives] = useState(3); 
+  const [lives, setLives] = useState(3);
   const [gameOver, setGameOver] = useState(false);
   const invincibleRef = useRef(false);
   const aiCountRef = useRef(3);
 
   useEffect(() => {
-    if (gameOver) return; // Stop game when over 🆕
+    if (gameOver) return; // Stop game when over
     const canvas = canvasRef.current!;
     const engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
     const scene = new Scene(engine);
@@ -36,10 +36,26 @@ export const SceneCanvas = () => {
     // Physics
     scene.enablePhysics(new Vector3(0, -9.81, 0));
 
-    // Ground
-    const ground = MeshBuilder.CreateGround('ground', { width: 40, height: 40 }, scene);
-    ground.position.y = -2;
-    ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
+  // Ground
+  const ground = MeshBuilder.CreateGround('ground', { width: 40, height: 40 }, scene);
+  ground.position.y = -2;
+  ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
+
+  // Apply texture to ground
+  const groundMat = new StandardMaterial('groundMat', scene);
+  groundMat.diffuseTexture = new (window as any).BABYLON.Texture('src/textures/ground.jpg', scene);
+  ground.material = groundMat;
+
+    // const ground = MeshBuilder.CreateGroundFromHeightMap(
+    //   "terrain",
+    //   "textures/heightMap.png", // grayscale image (white = high, black = low)
+    //   { width: 40, height: 40, subdivisions: 100, minHeight: 0, maxHeight: 5 },
+    //   scene
+    // );
+
+    // ground.position.y = -2;
+    // ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.HeightmapImpostor, { mass: 0 }, scene);
+
 
     // Walls
     const walls = [
@@ -56,10 +72,11 @@ export const SceneCanvas = () => {
 
     // Player Ball
     const sphere = MeshBuilder.CreateSphere('playerBall', { diameter: 1 }, scene);
-    sphere.position.y = 4;
-    sphere.material = new StandardMaterial('ballMat', scene);
-    (sphere.material as StandardMaterial).diffuseColor = Color3.FromHexString('#ff8844');
-    sphere.physicsImpostor = new PhysicsImpostor(sphere, PhysicsImpostor.SphereImpostor, { mass: 1 }, scene);
+  sphere.position.y = 4;
+  const ballMat = new StandardMaterial('ballMat', scene);
+  ballMat.diffuseTexture = new (window as any).BABYLON.Texture('src/textures/ball.jpg', scene);
+  sphere.material = ballMat;
+  sphere.physicsImpostor = new PhysicsImpostor(sphere, PhysicsImpostor.SphereImpostor, { mass: 1 }, scene);
 
     // AI Balls
     let aiBalls: PhysicsImpostor[] = [];
@@ -154,7 +171,7 @@ export const SceneCanvas = () => {
             setLives(l => l + 1);
           }
 
-            
+
           return newScore;
         });
         spawnCoin();
@@ -212,31 +229,31 @@ export const SceneCanvas = () => {
   };
 
   return (
-    <div style={{ position:'relative', flex:1, background:'#000' }}>
-      <canvas ref={canvasRef} style={{ width:'100%', height:'100%', display:'block' }} />
-      
+    <div style={{ position: 'relative', flex: 1, background: '#000' }}>
+      <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+
       {!gameOver && (
         <>
-          <div style={{ position:'absolute', top:8, left:8, background:'rgba(0,0,0,0.5)', padding:'4px 8px', borderRadius:4, color:'#fff' }}>
+          <div style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(0,0,0,0.5)', padding: '4px 8px', borderRadius: 4, color: '#fff' }}>
             Score: {score} | Lives: {lives}
           </div>
-          <div style={{ position:'absolute', bottom:8, left:8, background:'rgba(0,0,0,0.4)', padding:'4px 8px', borderRadius:4, color:'#fff' }}>
-            WASD / Arrows to roll<br/>Mouse wheel to zoom
+          <div style={{ position: 'absolute', bottom: 8, left: 8, background: 'rgba(0,0,0,0.4)', padding: '4px 8px', borderRadius: 4, color: '#fff' }}>
+            WASD / Arrows to roll<br />Mouse wheel to zoom
           </div>
         </>
       )}
 
       {gameOver && (
         <div style={{
-          position:'absolute', top:0, left:0, right:0, bottom:0,
-          background:'rgba(0,0,0,0.8)', color:'#fff',
-          display:'flex', flexDirection:'column',
-          alignItems:'center', justifyContent:'center',
-          fontFamily:'system-ui'
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.8)', color: '#fff',
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          fontFamily: 'system-ui'
         }}>
           <h1>Game Over</h1>
           <p>Final Score: {score}</p>
-          <button onClick={restartGame} style={{ marginTop:20, padding:'10px 20px', fontSize:16, borderRadius:6 }}>
+          <button onClick={restartGame} style={{ marginTop: 20, padding: '10px 20px', fontSize: 16, borderRadius: 6 }}>
             Restart
           </button>
         </div>
