@@ -43,7 +43,7 @@ export const SceneCanvas = () => {
 
   // Apply texture to ground
   const groundMat = new StandardMaterial('groundMat', scene);
-  groundMat.diffuseTexture = new (window as any).BABYLON.Texture('src\\textures\\ground.jpg', scene);
+  groundMat.diffuseTexture = new (window as any).BABYLON.Texture('/textures/ground.jpg', scene);
   ground.material = groundMat;
 
     // const ground = MeshBuilder.CreateGroundFromHeightMap(
@@ -74,7 +74,7 @@ export const SceneCanvas = () => {
     const sphere = MeshBuilder.CreateSphere('playerBall', { diameter: 1 }, scene);
   sphere.position.y = 4;
   const ballMat = new StandardMaterial('ballMat', scene);
-  ballMat.diffuseTexture = new (window as any).BABYLON.Texture('src/textures/ball.jpg', scene);
+  ballMat.diffuseTexture = new (window as any).BABYLON.Texture('/textures/ball.jpg', scene);
   sphere.material = ballMat;
   sphere.physicsImpostor = new PhysicsImpostor(sphere, PhysicsImpostor.SphereImpostor, { mass: 1 }, scene);
 
